@@ -10,6 +10,8 @@
 #ifndef BASICINTERFACES_ITERS_HPP_
 #define BASICINTERFACES_ITERS_HPP_
 
+#include "AVR.hpp"
+
 
 class IWrite;
 class IRead;
@@ -23,14 +25,14 @@ template <class Item>
 class IIterator;
 
 
-
 template <class Item>
 class IIterable
 {
 public:
         virtual Item getItemAt(const u8 index) const = 0;
         virtual size_t length() const = 0;
-        virtual IIterator<Item> getIterator() const = 0;
+        inline virtual IIterator<Item> getIterator() const
+                __attribute__((__always_inline__));
 protected:
         IIterable<Item>() { }
 private:
@@ -71,7 +73,8 @@ private:
         IWrite& operator=( const IWrite &c );
 
         template <typename Item>
-        friend void operator<<(const IWrite & writer, IIterator<Item> & iter) {
+        friend void
+        operator<<(const IWrite & writer, IIterator<Item> & iter) {
                 iter.first ();
                 while( !iter.isDone() ) {
                         writer._write_ (iter.current ());
@@ -80,11 +83,18 @@ private:
         }
 
         template <typename Item>
-        friend void operator<<(const IWrite & writer, const IIterable<Item> & itble) {
+        friend void
+        operator<<(const IWrite & writer, const IIterable<Item> & itble) {
                 auto iter = IIterator<Item>(&itble);
                 writer << iter;
         }
 };
 
+
+template <class Item>
+IIterator<Item> IIterable<Item>::getIterator() const
+{
+        return IIterator<Item>(this);
+}
 
 #endif /* BASICINTERFACES_ITERS_HPP_ */

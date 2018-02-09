@@ -50,7 +50,7 @@ void LiquidCrystal::terminate() const
 
 }
 
-u8 LiquidCrystal::read()
+u8 LiquidCrystal::read() const
 {
         return 0;
 }

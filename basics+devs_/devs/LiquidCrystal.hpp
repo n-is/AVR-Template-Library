@@ -13,6 +13,7 @@
 #include "basics/AVR.hpp"
 #include "basics/BasicInterfaces_iters.hpp"
 
+
 namespace LCD {
 
         const u8 clear = 0x01;
@@ -44,14 +45,16 @@ private:
 
 //functions
 public:
-	LiquidCrystal(const u8 RS, const u8 E, const u8 D4, const u8 D5, const u8 D6, const u8 D7);
+	LiquidCrystal(const u8 RS, const u8 E,
+                const u8 D4, const u8 D5, const u8 D6, const u8 D7);
 	~LiquidCrystal();
 
         u8 initialize(const u8 column, const u8 row) const;
         void terminate() const;
 
-        u8 read();
-        inline u8 write(const u8 character) const;
+        u8 read() const;
+        inline u8 write(const u8 character) const
+                __attribute__((__always_inline__));
 
         void control(const u8 command) const;
 
