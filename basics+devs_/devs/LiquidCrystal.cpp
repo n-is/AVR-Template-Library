@@ -55,7 +55,12 @@ u8 LiquidCrystal::read()
         return 0;
 }
 
-u8 LiquidCrystal::write(const u8 character) const
+void LiquidCrystal::_write_(const u8 c) const
+{
+        write (c);
+}
+
+inline u8 LiquidCrystal::write(const u8 character) const
 {
         digitalWrite (res_select_, PIN::HIGH);
         send (character);

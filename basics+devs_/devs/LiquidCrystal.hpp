@@ -11,6 +11,7 @@
 #define __LIQUIDCRYSTAL_H__
 
 #include "basics/AVR.hpp"
+#include "basics/BasicInterfaces_iters.hpp"
 
 namespace LCD {
 
@@ -33,7 +34,7 @@ namespace LCD {
 
 }
 
-class LiquidCrystal
+class LiquidCrystal : public IWrite
 {
 //variables
 public:
@@ -50,9 +51,11 @@ public:
         void terminate() const;
 
         u8 read();
-        u8 write(const u8 character) const;
+        inline u8 write(const u8 character) const;
 
         void control(const u8 command) const;
+
+        void _write_(const u8 c) const;
 
 protected:
 private:
