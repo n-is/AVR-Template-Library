@@ -1,5 +1,5 @@
 /*
- * BasicInterfaces_iters.h
+ * BasicInterfaces_iters.hpp
  *
  * Created: 2/4/2018 5:39:45 PM
  *  Author: n-is
@@ -7,8 +7,8 @@
  */
 
 
-#ifndef BASICINTERFACES_ITERS_HPP_
-#define BASICINTERFACES_ITERS_HPP_
+#ifndef BASICS_BASICINTERFACES_ITERS_HPP_
+#define BASICS_BASICINTERFACES_ITERS_HPP_
 
 #include "AVR.hpp"
 
@@ -66,11 +66,12 @@ class IWrite
 {
 public:
         virtual void _write_(const u8 c) const  = 0;
+
 protected:
         IWrite() { }
 private:
-        IWrite( const IWrite &c );
-        IWrite& operator=( const IWrite &c );
+        IWrite( const IWrite &c ) = delete;
+        IWrite& operator=( const IWrite &c ) = delete;
 
         template <typename Item>
         friend void
@@ -88,6 +89,11 @@ private:
                 auto iter = IIterator<Item>(&itble);
                 writer << iter;
         }
+
+        friend void
+        operator<<(const IWrite & writer, const char c) {
+                writer._write_ (c);
+        }
 };
 
 
@@ -97,4 +103,4 @@ IIterator<Item> IIterable<Item>::getIterator() const
         return IIterator<Item>(this);
 }
 
-#endif /* BASICINTERFACES_ITERS_HPP_ */
+#endif /* BASICS_BASICINTERFACES_ITERS_HPP_ */

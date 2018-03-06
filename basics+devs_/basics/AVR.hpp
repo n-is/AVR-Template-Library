@@ -1,5 +1,5 @@
 /*
-* AVR.h
+* AVR.hpp
 *
 * Created: 1/20/2018 4:18:54 PM
 *  Author: n-is
@@ -7,8 +7,8 @@
 */
 #define F_CPU	16000000UL
 
-#ifndef AVR_H_
-#define AVR_H_
+#ifndef BASICS_AVR_HPP_
+#define BASICS_AVR_HPP_
 
 #include <avr/io.h>
 
@@ -78,4 +78,4 @@ inline const u32 microSecondsToClockCycles(const u32 microSeconds)
         return (const u32)(microSeconds * CLOCK_CYCLES_PER_MICRO_SECOND);
 }
 
-#endif /* AVR_H_ */
+#endif /* BASICS_AVR_HPP_ */

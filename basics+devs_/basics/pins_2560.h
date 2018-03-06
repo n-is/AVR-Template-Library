@@ -7,8 +7,8 @@
 */
 
 
-#ifndef PINS_2560_H_
-#define PINS_2560_H_
+#ifndef BASICS_PINS_2560_H_
+#define BASICS_PINS_2560_H_
 
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -83,4 +83,4 @@ const u8 PROGMEM pin_to_bit_mask_PGM[] = {
 };
 
 
-#endif /* PINS_2560_H_ */
+#endif /* BASICS_PINS_2560_H_ */

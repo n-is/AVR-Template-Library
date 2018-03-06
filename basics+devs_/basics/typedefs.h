@@ -7,8 +7,8 @@
  */
 
 
-#ifndef TYPEDEFS_H_
-#define TYPEDEFS_H_
+#ifndef BASICS_TYPEDEFS_H_
+#define BASICS_TYPEDEFS_H_
 
 #include <avr/io.h>
 
@@ -23,4 +23,4 @@ typedef int16_t i16;
 typedef int32_t i32;
 
 
-#endif /* TYPEDEFS_H_ */
+#endif /* BASICS_TYPEDEFS_H_ */

@@ -1,5 +1,5 @@
 /*
-* LiquidCrystal.h
+* LiquidCrystal.hpp
 *
 * Created: 1/22/2018 7:33:19 PM
 *  Author: n-is
@@ -7,8 +7,8 @@
 */
 
 
-#ifndef __LIQUIDCRYSTAL_H__
-#define __LIQUIDCRYSTAL_H__
+#ifndef DEVS_LIQUIDCRYSTAL_HPP_
+#define DEVS_LIQUIDCRYSTAL_HPP_
 
 #include "basics/AVR.hpp"
 #include "basics/BasicInterfaces_iters.hpp"
@@ -78,4 +78,4 @@ private:
 
 }; //LiquidCrystal
 
-#endif //__LIQUIDCRYSTAL_H__
+#endif // DEVS_LIQUIDCRYSTAL_HPP_

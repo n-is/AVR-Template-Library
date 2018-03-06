@@ -7,8 +7,8 @@
 */
 
 
-#ifndef UNDEFS_H_
-#define UNDEFS_H_
+#ifndef BASICS_UNDEFS_H_
+#define BASICS_UNDEFS_H_
 
 #include <avr/io.h>
 
@@ -516,4 +516,4 @@
 #endif // PL7
 
 
-#endif /* UNDEFS_H_ */
+#endif /* BASICS_UNDEFS_H_ */

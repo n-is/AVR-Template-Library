@@ -10,7 +10,8 @@
 #include "LiquidCrystal.hpp"
 #include <util/delay.h>
 
-LiquidCrystal::LiquidCrystal(const u8 RS, const u8 E, const u8 D4, const u8 D5, const u8 D6, const u8 D7):
+LiquidCrystal::LiquidCrystal
+(const u8 RS, const u8 E, const u8 D4, const u8 D5, const u8 D6, const u8 D7):
 res_select_(RS), enable_(E), data4_(D4), data5_(D5), data6_(D6), data7_(D7)
 {
         pinMode (data4_, DDR::LOW);
