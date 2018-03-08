@@ -10,37 +10,40 @@
 #ifndef DTYPES_QUEUE_HPP_
 #define DTYPES_QUEUE_HPP_
 
+#include <stddef.h>
 
-template <class T, class Size_Type, Size_Type queue_size>
+typedef u8 queue_size_t;
+
+template <class T, queue_size_t q_size>
 class Queue
 {
-        // Data Members
-        private:
-        T queue_[queue_size];
-        Size_Type head_, tail_;
-        Size_Type curr_size_;
+// Data Members
+private:
+        T queue_[q_size];
+        queue_size_t head_, tail_;
+        queue_size_t curr_size_;
 
-        // Member Functions
-        public:
+// Member Functions
+public:
         Queue():head_(0), tail_(0), curr_size_(0) { }
 
         void insert(T elem) {
                 ++curr_size_;
                 queue_[head_++] = elem;
-                head_ %= queue_size;
+                head_ %= q_size;
         }
 
         T lookup() {
                 if( curr_size_ ) {
                         --curr_size_;
                         T elem = queue_[tail_++];
-                        tail_ %= queue_size;
+                        tail_ %= q_size;
                         return elem;
                 }
                 return 0;
         }
 
-        Size_Type length() const { return curr_size_; }
+        queue_size_t length() const { return curr_size_; }
 };
 
 

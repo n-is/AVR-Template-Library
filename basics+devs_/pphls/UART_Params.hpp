@@ -10,16 +10,24 @@
 #ifndef PPHLS_UART_PARAMS_HPP_
 #define PPHLS_UART_PARAMS_HPP_
 
-
-enum class Hardware
-{
-        UART_0,
-        UART_1,
-        UART_2,
-        UART_3
-};
+#include <avr/pgmspace.h>
+#include "Hardware.hpp"
 
 namespace UART {
+
+        const u16 PROGMEM _NULL[] = { 0, 0, 0, 0, 0, 0};
+
+        const u16 PROGMEM _0[] = { (u16)&UBRR0L, (u16)&UBRR0H, (u16)&UCSR0A,
+                                   (u16)&UCSR0B, (u16)&UCSR0C, (u16)&UDR0 };
+
+        const u16 PROGMEM _1[] = { (u16)&UBRR1L, (u16)&UBRR1H, (u16)&UCSR1A,
+                                   (u16)&UCSR1B, (u16)&UCSR1C, (u16)&UDR1 };
+
+        const u16 PROGMEM _2[] = { (u16)&UBRR2L, (u16)&UBRR2H, (u16)&UCSR2A,
+                                   (u16)&UCSR2B, (u16)&UCSR2C, (u16)&UDR2 };
+
+        const u16 PROGMEM _3[] = { (u16)&UBRR3L, (u16)&UBRR3H, (u16)&UCSR3A,
+                                   (u16)&UCSR3B, (u16)&UCSR3C, (u16)&UDR3 };
 
         const u8 rxcie = 7;
         const u8 udrie = 5;
@@ -69,19 +77,27 @@ namespace UART {
 
 struct UART_Params
 {
-        volatile u8 * const ubrrl_;
-        volatile u8 * const ubrrh_;
-        volatile u8 * const ucsra_;
-        volatile u8 * const ucsrb_;
-        volatile u8 * const ucsrc_;
-        volatile u8 * const udr_;
+        volatile u8 * ubrrl_;
+        volatile u8 * ubrrh_;
+        volatile u8 * ucsra_;
+        volatile u8 * ucsrb_;
+        volatile u8 * ucsrc_;
+        volatile u8 * udr_;
 
-//protected:
-        UART_Params(volatile u8 * ubrrl, volatile u8 * ubrrh,
-                volatile u8 * ucsra, volatile u8 * ucsrb,
-                volatile u8 * ucsrc, volatile u8 * udr) :
-                ubrrl_(ubrrl), ubrrh_(ubrrh), ucsra_(ucsra),
-                ucsrb_(ucsrb), ucsrc_(ucsrc), udr_(udr) { }
+        template <typename T, size_t N>
+        UART_Params( const T (&arr)[N] ) {
+                set_params (arr);
+        }
+
+        template <typename T, size_t N>
+        inline void set_params( const T (&name)[N] ) {
+                ubrrl_ = (volatile u8 *)pgm_read_word(name + 0);
+                ubrrh_ = (volatile u8 *)pgm_read_word(name + 1);
+                ucsra_ = (volatile u8 *)pgm_read_word(name + 2);
+                ucsrb_ = (volatile u8 *)pgm_read_word(name + 3);
+                ucsrc_ = (volatile u8 *)pgm_read_word(name + 4);
+                udr_   = (volatile u8 *)pgm_read_word(name + 5);
+        }
 
 };
 
