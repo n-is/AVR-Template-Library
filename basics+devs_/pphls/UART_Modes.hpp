@@ -12,35 +12,36 @@
 
 #include "UART_Params.hpp"
 #include "dtypes/Queue.hpp"
-
-class UART_Modes
-{
-public:
-        ~UART_Modes() { }
-        virtual u8 initialize(const UART_Params & u) const = 0;
-        virtual u8 receive(const UART_Params & u) = 0;
-        virtual u8 transmitt(const UART_Params & u, const u8 c) = 0;
-};
+/*
+//class UART_Modes
+//{
+//public:
+        //~UART_Modes() { }
+        //virtual u8 initialize(const UART_Params & u) const = 0;
+        //virtual u8 receive(const UART_Params & u) = 0;
+        //virtual u8 transmitt(const UART_Params & u, const char c) = 0;
+//};
+*/
 
 namespace UART {
 
-        class Polling_Mode : public UART_Modes
+        class Polling_Mode
         {
         protected:
                 Polling_Mode() { }
 
-                inline u8 initialize(const UART_Params & u) const override {
+                inline u8 initialize(const UART_Params & u) const {
                         *(u.ucsrb_) |= (1 << UART::rx_en)
                                     |  (1 << UART::tx_en);
                         return 0;
                 }
 
-                inline u8 receive(const UART_Params & u) override {
+                inline u8 receive(const UART_Params & u) {
                         while( !(*(u.ucsra_) & _BV(UART::rxc)) );
                         return *(u.udr_);
                 }
 
-                inline u8 transmitt(const UART_Params & u, const u8 c)override{
+                inline u8 transmitt(const UART_Params & u, const char c) {
                         while( !(*(u.ucsra_) & _BV(UART::udre)) );
                         *(u.udr_) = c;
                         return 0;
@@ -51,7 +52,7 @@ namespace UART {
                 Polling_Mode& operator=( const Polling_Mode & ) = delete;
         };
 
-        class Interrupt_Mode : public UART_Modes
+        class Interrupt_Mode
         {
         // Variables
         private:
@@ -65,7 +66,7 @@ namespace UART {
                 Interrupt_Mode():
                 tx_elements_(0), tx_queue_(), rx_elements_(0), rx_queue_() { }
 
-                inline u8 initialize(const UART_Params & u) const override {
+                inline u8 initialize(const UART_Params & u) const {
                         *(u.ucsrb_) |= _BV(UART::rxcie)
                                     |  _BV(UART::rx_en)
                                     |  _BV(UART::tx_en);
@@ -73,7 +74,7 @@ namespace UART {
                         return 0;
                 }
 
-                inline u8 receive(const UART_Params & u) override {
+                inline u8 receive(const UART_Params & u) {
                         return rx_queue_.lookup ();
                 }
 
@@ -81,7 +82,7 @@ namespace UART {
                         rx_queue_.insert (*(u.udr_));
                 }
 
-                inline u8 transmitt(const UART_Params & u, const u8 c)override{
+                inline u8 transmitt(const UART_Params & u, const char c) {
 
                         tx_queue_.insert (c);
 

@@ -6,6 +6,13 @@
  *   email: 073bex422.nischal@pcampus.edu.np
  */
 
+/** This file should be included at the end of the file containing main routine.
+ **
+ ** This file contains interrupt routine for the UART communication interface.
+ ** So, if the UART is to be used in the interrupt mode, this file should be
+ ** absolutely included.
+ **/
+
 #ifndef PPHLS_UART_ISRS_HPP_
 #define PPHLS_UART_ISRS_HPP_
 

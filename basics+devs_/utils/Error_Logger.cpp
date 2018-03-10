@@ -7,3 +7,12 @@
  */
 
 #include "Error_Logger.hpp"
+
+//#include "devs/Bluetooth.hpp"
+//
+//extern template Bluetooth<Hardware::UART_0, UART::Interrupt_Mode> uart0;
+//
+//void log_error(const char * err, u8 err_code)
+//{
+//
+//}

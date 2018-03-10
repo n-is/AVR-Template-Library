@@ -72,7 +72,6 @@ public:
 
         inline char getItemAt(const u8 index) const { return str_ptr_[index]; }
 
-        //IIterator<Item> getIterator() const;
 };
 
 

@@ -11,7 +11,6 @@
 #define PPHLS_TWO_WIRE_HPP_
 
 #include "TwoWire_Params.hpp"
-#include "TwoWire_Modes.hpp"
 
 template <class Mode>
 class TwoWire : public Mode

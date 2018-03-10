@@ -27,9 +27,10 @@ public:
 
 	~Bluetooth() { }
 
+        template <u32 baud>
         inline u8
-        initialize(const u32 baud, const u8 config = 0b00011000) const {
-                return uart_.initialize (baud, config);
+        initialize(const u8 config = 0b00011000) const {
+                return uart_.initialize<baud>(config);
         }
 
         inline void terminate() { uart_.terminate (); }

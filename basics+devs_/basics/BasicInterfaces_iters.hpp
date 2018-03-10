@@ -14,11 +14,6 @@
 #include "utils/calc.hpp"
 
 
-class IWrite;
-class IRead;
-class IStream;
-class IBuffer;
-
 template <class Item>
 class IIterator;
 
@@ -71,9 +66,8 @@ private:
         IWrite( const IWrite &c ) = delete;
         IWrite& operator=( const IWrite &c ) = delete;
 
-        template <typename Item>
         inline friend void
-        operator<<(const IWrite & writer, IIterator<Item> & iter) {
+        operator<<(const IWrite & writer, IIterator<char> & iter) {
                 iter.first ();
                 while( !iter.isDone() ) {
                         writer._write_ (iter.current ());
@@ -81,34 +75,29 @@ private:
                 }
         }
 
-        template <typename Item>
         inline friend void
-        operator<<(const IWrite & writer, const IIterable<Item> & itble) {
-                auto iter = IIterator<Item>(&itble);
+        operator<<(const IWrite & writer, const IIterable<char> & itble) {
+                auto iter = IIterator<char>(&itble);
                 writer << iter;
         }
 
-        inline friend void
-        operator<<(const IWrite & writer, const char c) {
+        inline friend void operator<<(const IWrite & writer, const char c) {
                 writer._write_ (c);
         }
 
-        inline friend void
-        operator<<(const IWrite & writer, const char * c) {
+        inline friend void operator<<(const IWrite & writer, const char * c) {
                 while(*c)
                         writer._write_ (*c++);
         }
 
-        inline friend void
-        operator<<(const IWrite & writer, int num) {
+        inline friend void operator<<(const IWrite & writer, int num) {
                 u8 digits[6];
                 u8 len = decompose_number (num, digits);
                 for(u8 i = 0; i < len; ++i)
                 writer._write_ (digits[i]);
         }
 
-        inline friend void
-        operator<<(const IWrite & writer, long num) {
+        inline friend void operator<<(const IWrite & writer, long num) {
                 u8 digits[11];
                 u8 len = decompose_number (num, digits);
                 for(u8 i = 0; i < len; ++i)

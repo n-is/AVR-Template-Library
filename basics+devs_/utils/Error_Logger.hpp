@@ -12,11 +12,16 @@
 
 #include "basics/typedefs.h"
 
+//extern template Bluetooth<H,M> uart0;
+
+//extern typename Bluetooth<Hardware::UART_0, UART::Interrupt_Mode> uart0;
+
 /** Logs the error occured during program execution.
  ** We can output the error to the terminal through UART Interface or log it in
  ** a file for later use.
  **/
 inline void log_error(const char * err, u8 err_code) { }
+
 
 
 #endif /* UTILS_ERROR_LOGGER_HPP_ */

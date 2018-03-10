@@ -10,6 +10,8 @@
 #include "LiquidCrystal.hpp"
 #include <util/delay.h>
 
+const u8 LiquidCrystal::Y[] = {0x80, 0xC0, 0x94, 0xD4};
+
 LiquidCrystal::LiquidCrystal
 (const u8 RS, const u8 E, const u8 D4, const u8 D5, const u8 D6, const u8 D7):
 res_select_(RS), enable_(E), data4_(D4), data5_(D5), data6_(D6), data7_(D7)
@@ -48,12 +50,12 @@ u8 LiquidCrystal::initialize(const u8 column, const u8 row) const
 
 void LiquidCrystal::terminate() const
 {
-
-}
-
-u8 LiquidCrystal::read() const
-{
-        return 0;
+        pinMode (data4_, DDR::OFF);
+        pinMode (data5_, DDR::OFF);
+        pinMode (data6_, DDR::OFF);
+        pinMode (data7_, DDR::OFF);
+        pinMode (enable_, DDR::OFF);
+        pinMode (res_select_, DDR::OFF);
 }
 
 void LiquidCrystal::_write_(const u8 c) const
@@ -82,6 +84,7 @@ inline void LiquidCrystal::byte_command(const u8 byte_cmd) const
 
 inline void LiquidCrystal::send(const u8 value) const
 {
+        /** Well, it seems there is no need to wait for lcd. */
         //pinMode (data7_, DDR::INPUT);
         //while( isBusy () );
         //pinMode (data7_, DDR::OUTPUT);

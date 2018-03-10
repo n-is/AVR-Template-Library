@@ -42,6 +42,7 @@ public:
 protected:
 private:
         const u8 res_select_, enable_, data4_, data5_, data6_, data7_;
+        static const u8 Y[4];
 
 //functions
 public:
@@ -52,13 +53,11 @@ public:
         u8 initialize(const u8 column, const u8 row) const;
         void terminate() const;
 
-        u8 read() const;
-        inline u8 write(const u8 character) const
-                __attribute__((__always_inline__));
-
         void control(const u8 command) const;
 
         void _write_(const u8 c) const;
+
+        inline void xy(const u8 x, const u8 y) const { control (Y[y] + x); }
 
 protected:
 private:
@@ -75,6 +74,9 @@ private:
         inline void enable() const;
 
         inline bool isBusy() const;
+
+        inline u8 write(const u8 character) const
+        __attribute__((__always_inline__));
 
 }; //LiquidCrystal
 
