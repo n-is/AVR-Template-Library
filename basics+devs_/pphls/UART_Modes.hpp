@@ -12,16 +12,6 @@
 
 #include "UART_Params.hpp"
 #include "dtypes/Queue.hpp"
-/*
-//class UART_Modes
-//{
-//public:
-        //~UART_Modes() { }
-        //virtual u8 initialize(const UART_Params & u) const = 0;
-        //virtual u8 receive(const UART_Params & u) = 0;
-        //virtual u8 transmitt(const UART_Params & u, const char c) = 0;
-//};
-*/
 
 namespace UART {
 
@@ -52,15 +42,16 @@ namespace UART {
                 Polling_Mode& operator=( const Polling_Mode & ) = delete;
         };
 
+
         class Interrupt_Mode
         {
         // Variables
         private:
                 volatile u8 tx_elements_;
-                Queue<u8, UART::tx_buf_size> tx_queue_;
+                Queue<u8, UART::buf_size_t, UART::tx_buf_size> tx_queue_;
 
                 volatile u8 rx_elements_;
-                Queue<u8, UART::rx_buf_size> rx_queue_;
+                Queue<u8, UART::buf_size_t, UART::rx_buf_size> rx_queue_;
         // Member Functions
         protected:
                 Interrupt_Mode():

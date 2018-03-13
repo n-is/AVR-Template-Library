@@ -29,6 +29,21 @@ namespace UART {
         const u16 PROGMEM _3[] = { (u16)&UBRR3L, (u16)&UBRR3H, (u16)&UCSR3A,
                                    (u16)&UCSR3B, (u16)&UCSR3C, (u16)&UDR3 };
 
+        const u32 available_bauds[] = { 2400,
+                                        4800,
+                                        9600,
+                                        14400,
+                                        19200,
+                                        28800,
+                                        38400,
+                                        57600,
+                                        76800,
+                                        115200,
+                                        230400,
+                                        250000,
+                                        500000,
+                                        1000000 };
+
         const u8 rxcie = 7;
         const u8 udrie = 5;
 
@@ -43,7 +58,7 @@ namespace UART {
         const u8 rxc   = 7;
 
         typedef u8      buf_size_t;
-        const buf_size_t tx_buf_size = 32;
+        const buf_size_t tx_buf_size = 128;
         const buf_size_t rx_buf_size = 32;
 
         // Configuration is in the following format :

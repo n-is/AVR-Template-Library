@@ -10,11 +10,8 @@
 #ifndef DTYPES_QUEUE_HPP_
 #define DTYPES_QUEUE_HPP_
 
-#include <stddef.h>
 
-typedef u8 queue_size_t;
-
-template <class T, queue_size_t q_size>
+template <class T, class queue_size_t, queue_size_t q_size>
 class Queue
 {
 // Data Members

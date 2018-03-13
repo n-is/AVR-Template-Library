@@ -33,7 +33,7 @@ public:
                 return uart_.initialize<baud>(config);
         }
 
-        inline void terminate() { uart_.terminate (); }
+        inline void terminate() { uart_.template terminate<H>(); }
 
         inline void _write_ (const u8 c) const { transmitt (c); }
 

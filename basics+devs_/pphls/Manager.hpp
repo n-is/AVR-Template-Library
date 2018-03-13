@@ -14,6 +14,8 @@
 #include "Hardware.hpp"
 #include "utils/Error_Logger.hpp"
 
+void log_error(const char * err, u8 err_code);
+
 class Manager
 {
 private:
@@ -24,13 +26,27 @@ public:
         inline static u8 record() {
 
                 static_assert(H < Hardware::LAST && ((u8)H >= 0),
-                        "Unavailable Hardware Requested.");
+                                "Hardware Not Available.");
 
                 if( is_available<H> () ) {
                         hardwares[(u8)H] = 1;
                         return 0;
                 }
-                log_error ("Hardware requested is already in use.", (u8)H);
+                log_error ("Hardware in use.", (u8)H);
+                return 1;
+        }
+
+        template <Hardware H>
+        inline static u8 release() {
+
+                static_assert(H < Hardware::LAST && ((u8)H >= 0),
+                                "Hardware Not Available.");
+
+                if( !is_available<H> () ) {
+                        hardwares[(u8)H] = 0;
+                        return 0;
+                }
+                log_error ("Hardware not in use.", (u8)H);
                 return 1;
         }
 

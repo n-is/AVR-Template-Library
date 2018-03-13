@@ -20,7 +20,6 @@
  ** We can output the error to the terminal through UART Interface or log it in
  ** a file for later use.
  **/
-inline void log_error(const char * err, u8 err_code) { }
 
 
 
