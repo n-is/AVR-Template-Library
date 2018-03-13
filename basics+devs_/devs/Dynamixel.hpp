@@ -297,7 +297,7 @@ u8 Dynamixel<H, UART_Mode, D>::receive_packet(u8 (&arr)[N])
                 arr[i] = raw[i + 5];
         }
 
-        return raw[5];  // 5th byte is the error byte
+        return raw[4];  // 5th byte is the error byte
 }
 
 // The packets are received in the following format :
@@ -321,7 +321,7 @@ u8 Dynamixel<H, UART_Mode, D>::receive_packet
                 arr[i] = raw[i + 5];
         }
 
-        return raw[5];  // 5th byte is the error byte
+        return raw[4];  // 5th byte is the error byte
 }
 
 
