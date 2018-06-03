@@ -1,10 +1,10 @@
 /*
- * SPI_Params.hpp
- *
- * Created: 3/10/2018 11:51:31 AM
- *  Author: Nirdesh
- *   email: 073bex420.nirdesh@pcampus.edu.np
- */
+* SPI_Params.hpp
+*
+* Created: 3/10/2018 11:51:31 AM
+*  Author: Nirdesh
+*   email: 073bex420.nirdesh@pcampus.edu.np
+*/
 
 #ifndef PPHLS_SPI_PARAMS_HPP_
 #define  PPHLS_SPI_PARAMS_HPP_
@@ -14,11 +14,11 @@
 
 namespace SPI
 {
-	const u16 PROGMEM _NULL[] = { 0, 0, 0};
+	const u16 PROGMEM _NULL[] = { 0, 0, 0 };
 	const u16 PROGMEM _REG[] = { (u16)&SPCR, (u16)&SPSR, (u16)&SPDR };
 
 	const u8 mosi_pin = PB2;
-	const u8 miso_pin  = PB3;
+	const u8 miso_pin = PB3;
 	const u8 sck_pin = PB1;
 
 	//Bits of SPCR(Control Register)
@@ -80,15 +80,15 @@ struct SPI_Params
 	volatile u8 * spdr_;
 
 	template <typename T, size_t N>
-	SPI_Params( T (&arr)[N] ) {
+	SPI_Params(T(&arr)[N]) {
 		set_params(arr);
 	}
 
 	template <typename T, size_t N>
-	void set_params( T (&arr)[N] ) {
-		 spcr_ = (volatile u8 *)pgm_read_word(arr + 0);
-		 spsr_ = (volatile u8 *)pgm_read_word(arr + 1);
-		 spdr_ = (volatile u8 *)pgm_read_word(arr + 2);
+	void set_params(T(&arr)[N]) {
+		spcr_ = (volatile u8 *)pgm_read_word(arr + 0);
+		spsr_ = (volatile u8 *)pgm_read_word(arr + 1);
+		spdr_ = (volatile u8 *)pgm_read_word(arr + 2);
 	}
 };
 

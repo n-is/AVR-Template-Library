@@ -20,46 +20,46 @@
 #ifdef UART0_INTERRUPT
 ISR(USART0_UDRE_vect)
 {
-        UART0_INTERRUPT.transmitt_irq ();
+        UART0_INTERRUPT.transmit_Irq ();
 }
 ISR(USART0_RX_vect)
 {
-        UART0_INTERRUPT.receive_irq ();
+        UART0_INTERRUPT.receive_Irq ();
 }
 #endif // UART0_INTERRUPT
 
 #ifdef UART1_INTERRUPT
 ISR(USART1_UDRE_vect)
 {
-        UART1_INTERRUPT.transmitt_irq ();
+        UART1_INTERRUPT.transmit_Irq ();
 }
 
 ISR(USART1_RX_vect)
 {
-        UART1_INTERRUPT.receive_irq ();
+        UART1_INTERRUPT.receive_Irq ();
 }
 #endif // UART1_INTERRUPT
 
 #ifdef UART2_INTERRUPT
 ISR(USART2_UDRE_vect)
 {
-        UART2_INTERRUPT.transmitt_irq ();
+        UART2_INTERRUPT.transmit_Irq ();
 }
 
 ISR(USART2_RX_vect)
 {
-        UART2_INTERRUPT.receive_irq ();
+        UART2_INTERRUPT.receive_Irq ();
 }
 #endif // UART2_INTERRUPT
 
 #ifdef UART3_INTERRUPT
 ISR(USART3_UDRE_vect)
 {
-        UART3_INTERRUPT.transmitt_irq ();
+        UART3_INTERRUPT.transmit_Irq ();
 }
 
 ISR(USART3_RX_vect)
 {
-        UART3_INTERRUPT.receive_irq ();
+        UART3_INTERRUPT.receive_Irq ();
 }
 #endif // UART3_INTERRUPT

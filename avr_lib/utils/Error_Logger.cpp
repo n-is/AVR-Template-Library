@@ -12,7 +12,7 @@
 //
 //extern template Bluetooth<Hardware::UART_0, UART::Interrupt_Mode> uart0;
 //
-void log_error(const char * err, u8 err_code)
+void log_Error(const char * err, u8 err_code)
 {
 
 }

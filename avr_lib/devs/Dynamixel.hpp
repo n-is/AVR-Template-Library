@@ -75,7 +75,7 @@ public:
 
 
 	template <u8 addr>
-	bool is_available() {
+	static bool is_Available() {
 		return (addr == model_num_l ||
 			addr == model_num_h ||
 			addr == firmware_ver ||
@@ -182,7 +182,7 @@ private:
 // Member Functions
 public:
         Dynamixel():
-        uart_(HardwareUART<UART_Mode>::template getInstance<H>()) { }
+        uart_(HardwareUART<UART_Mode>::template get_Instance<H>()) { }
 
 	~Dynamixel() { terminate(); }
 
@@ -195,14 +195,14 @@ public:
         template <u32 baud>
         inline u8 initialize() const {
                 u8 err = uart_.template initialize<baud> ();
-                uart_.rx_off();
+                uart_.rx_Off();
                 return err;
         }
 
         inline void terminate() { uart_.template terminate<H>(); }
 
 	/***
-	 ** A function that transmitts the data in the parameters_[] array of
+	 ** A function that transmits the data in the parameters_[] array of
          ** the class by framing it properly.
          **
          ** \param id The id of the dynamixel.
@@ -211,7 +211,7 @@ public:
          **                     to be transmitted.
          ** \return void
          **/
-        void transmitt_packet(u8 id, u8 instruction, u8 params_no) const;
+        void transmit_Packet(u8 id, u8 instruction, u8 params_no) const;
 
 	/***
 	 ** A function template that receives 'data_len' bytes from the
@@ -226,86 +226,86 @@ public:
          **             specific error has occured.
          **/
         template <u8 id, u8 start_addr, u8 data_len, size_t N>
-        u8 receive_packet(u8 (&arr)[N]);
+        u8 receive_Packet(u8 (&arr)[N]);
 
 	/***
-	 ** This function is a clone of the receive_packet function template
+	 ** This function is a clone of the receive_Packet function template
          ** above.
          ** @pros The parameters can be dynamic.
          ** @cons It is costlier than the function template above, that does the
          **       same task.
          **/
         template <size_t N>
-        u8 receive_packet(u8 id, u8 start_addr, u8 data_len, u8 (&arr)[N]);
+        u8 receive_Packet(u8 id, u8 start_addr, u8 data_len, u8 (&arr)[N]);
 
-        /** This function is just here to call transmitt interrupt request.*/
-        inline void transmitt_irq() const { uart_.transmitt_irq (); }
+        /** This function is just here to call transmit interrupt request.*/
+        inline void transmit_Irq() const { uart_.transmit_Irq (); }
         /** This function is just here to call receive interrupt request.*/
-        inline void receive_irq() const { uart_.receive_irq (); }
+        inline void receive_Irq() const { uart_.receive_Irq (); }
 
-        inline void set_position(u8 id, u16 pos) {
+        inline void set_Position(u8 id, u16 pos) {
                 parameters_[0] = D::goal_pos_l;
                 parameters_[1] = (u8)pos;
                 parameters_[2] = (u8)(pos >> 8);
-                transmitt_packet (id, Dyna::write_inst, 3);
+                transmit_Packet (id, Dyna::write_inst, 3);
         }
 
-        inline void set_id(u8 id) {
+        inline void set_Id(u8 id) {
                 parameters_[0] = D::id;
                 parameters_[1] = id;
-                transmitt_packet (Dyna::broadcast_id, Dyna::write_inst, 2);
+                transmit_Packet (Dyna::broadcast_id, Dyna::write_inst, 2);
         }
 
         inline void led(u8 id, u8 state) {
                 parameters_[0] = D::led;
                 parameters_[1] = state;
-                transmitt_packet (id, Dyna::write_inst, 2);
+                transmit_Packet (id, Dyna::write_inst, 2);
         }
 
-        inline void joint_mode(u8 id, u16 cw_limit, u16 ccw_limit) {
+        inline void joint_Mode(u8 id, u16 cw_limit, u16 ccw_limit) {
                 parameters_[0] = D::cw_angle_l;
                 parameters_[1] = (u8)cw_limit;
                 parameters_[2] = (u8)(cw_limit >> 8);
                 parameters_[3] = (u8)ccw_limit;
                 parameters_[4] = (u8)(ccw_limit >> 8);
-                transmitt_packet (id, Dyna::write_inst, 5);
+                transmit_Packet (id, Dyna::write_inst, 5);
         }
 
         inline void speed(u8 id, u16 speed_of_motor) {
                 parameters_[0] = D::moving_speed_l;
                 parameters_[1] = (u8)speed_of_motor;
                 parameters_[2] = (u8)(speed_of_motor >> 8);
-                transmitt_packet (id, Dyna::write_inst, 3);
+                transmit_Packet (id, Dyna::write_inst, 3);
         }
 
         inline void torque(u8 id, bool on_off) {
                 parameters_[0] = D::torque_enable;
                 parameters_[1] = on_off;
-                transmitt_packet (id, Dyna::write_inst, 3);
+                transmit_Packet (id, Dyna::write_inst, 3);
         }
 
-	inline bool is_null() const {
-		return uart_.is_null();
+	inline bool is_Null() const {
+		return uart_.is_Null();
 	}
 
 private:
 	Dynamixel(const Dynamixel &c) = delete;
 	Dynamixel& operator=(const Dynamixel &c) = delete;
 
-        inline void set_tx_only() const {
-                uart_.rx_off();
-                uart_.tx_on();
+        inline void set_Tx_Only() const {
+                uart_.rx_Off();
+                uart_.tx_On();
         }
 
-        inline void set_rx_only() const {
-                uart_.tx_off();
-                uart_.rx_on();
+        inline void set_Rx_Only() const {
+                uart_.tx_Off();
+                uart_.rx_On();
         }
 
         /** Any dynamixel packet starts with 0xFF 0xFF */
-        inline void begin_packet() const {
-                uart_.transmitt (0xFF);
-                uart_.transmitt (0xFF);
+        inline void begin_Packet() const {
+                uart_.transmit (0xFF);
+                uart_.transmit (0xFF);
         }
 };
 
@@ -313,47 +313,47 @@ private:
 // Any Instruction and parameters packets should be sent in following format :
 // 0xFF 0xFF ID LENGTH INSTRUCTION PARAMETER_1...PARAMETER_N CHECK_SUM
 template <Hardware H, class UART_Mode, class D>
-void Dynamixel<H, UART_Mode, D>::transmitt_packet
+void Dynamixel<H, UART_Mode, D>::transmit_Packet
 (u8 id, u8 instruction, u8 params_no) const
 {
         u8 len = params_no + 2;
         u16 checksum = (id + instruction + len);
-        set_tx_only ();
-        begin_packet ();
-        uart_.transmitt (id);
-        uart_.transmitt (len);
-        uart_.transmitt (instruction);
+        set_Tx_Only ();
+        begin_Packet ();
+        uart_.transmit (id);
+        uart_.transmit (len);
+        uart_.transmit (instruction);
 
         for( u8 i = 0; i < params_no; ++i ) {
-                uart_.transmitt(parameters_[i]);
+                uart_.transmit(parameters_[i]);
                 checksum += parameters_[i];
         }
 
-        uart_.transmitt (~((u8)checksum));
+        uart_.transmit (~((u8)checksum));
 }
 
 // The packets are received in the following format :
 // 0xFF 0xFF ID LENGTH ERROR PARAMETER_1...PARAMETER_N CHECK_SUM
 template <Hardware H, class UART_Mode, class D>
 template <u8 id, u8 start_addr, u8 data_len, size_t N>
-u8 Dynamixel<H, UART_Mode, D>::receive_packet(u8 (&arr)[N])
+u8 Dynamixel<H, UART_Mode, D>::receive_Packet(u8 (&arr)[N])
 {
         static_assert (start_addr <= Dyna::max_addrs,
                 "Out of Bounds Memory requested.");
 
-        static_assert (D::template is_available<start_addr> (),
+        static_assert (D::template is_Available<start_addr> (),
                 "Out of Bounds Memory requested.");
         static_assert (data_len <= N,
                 "Data requested more than the array can hold.");
 
         parameters_[0] = start_addr;
         parameters_[1] = data_len;
-        transmitt_packet (id, Dyna::Inst::read_data, 2);
+        transmit_Packet (id, Dyna::Inst::read_data, 2);
 
-        set_rx_only ();
+        set_Rx_Only ();
         u8 raw[data_len + 6];  // There are 6 extra bytes in the packet
         uart_.flush();
-        for(u8 i = 0; i < arraySize (raw); ++i) {
+        for(u8 i = 0; i < array_Size (raw); ++i) {
                 raw[i] = uart_.receive();
         }
         for(u8 i = 0; i < data_len; ++i) {
@@ -367,14 +367,14 @@ u8 Dynamixel<H, UART_Mode, D>::receive_packet(u8 (&arr)[N])
 // 0xFF 0xFF ID LENGTH ERROR PARAMETER_1...PARAMETER_N CHECK_SUM
 template <Hardware H, class UART_Mode, class D>
 template <size_t N>
-u8 Dynamixel<H, UART_Mode, D>::receive_packet
+u8 Dynamixel<H, UART_Mode, D>::receive_Packet
 (u8 id, u8 start_addr, u8 data_len, u8 (&arr)[N])
 {
         parameters_[0] = start_addr;
         parameters_[1] = data_len;
-        transmitt_packet (id, Dyna::Inst::read_data, 2);
+        transmit_Packet (id, Dyna::Inst::read_data, 2);
 
-        set_rx_only ();
+        set_Rx_Only ();
         u8 raw[N + 6];  // There are 6 extra bytes in the packet
         uart_.flush();
         for(u8 i = 0; i < (data_len + 6); ++i) {

@@ -34,7 +34,7 @@ private:
 //Member Functions
 public:
 	Bluetooth():
-        uart_(HardwareUART<UART_Mode>::template getInstance<H>()) { }
+        uart_(HardwareUART<UART_Mode>::template get_Instance<H>()) { }
 
 	~Bluetooth() { terminate(); }
 
@@ -46,20 +46,20 @@ public:
 
         inline void terminate() { uart_.template terminate<H>(); }
 
-        inline void _write_ (const u8 c) const { transmitt (c); }
+        inline void _write_ (const u8 c) const { transmit (c); }
 
         inline u8 receive() const { return uart_.receive (); }
-        inline u8 transmitt(const u8 c) const { return uart_.transmitt (c); }
+        inline u8 transmit(const u8 c) const { return uart_.transmit (c); }
 
-        inline void transmitt_irq() const { uart_.transmitt_irq (); }
-        inline void receive_irq() const { uart_.receive_irq (); }
+        inline void transmit_Irq() const { uart_.transmit_Irq (); }
+        inline void receive_Irq() const { uart_.receive_Irq (); }
 
         inline u8 control(const u8 config) const {
                 return uart_.control (config);
         }
 
-	inline bool is_null() const {
-		return uart_.is_null();
+	inline bool is_Null() const {
+		return uart_.is_Null();
 	}
 
 protected:

@@ -31,34 +31,34 @@ namespace PIN {
 
 
 
-void pin_mode(u8 pin, u8 mode);
-void pin_write(u8 pin, u8 state);
-bool pin_read(u8 pin);
+void pin_Mode(u8 pin, u8 mode);
+void pin_Write(u8 pin, u8 state);
+bool pin_Read(u8 pin);
 
-void port_mode(u8 port, u8 value);
-void port_write(u8 port, u8 value);
-u8 port_read(u8 port);
+void port_Mode(u8 port, u8 value);
+void port_Write(u8 port, u8 value);
+u8 port_Read(u8 port);
 
 /// Converts the pin to appropriate bit
-inline u8 pin_to_bit(u8 pin)
+inline u8 pin_To_Bit(u8 pin)
 {
         return ( pgm_read_byte( pin_to_bit_mask_PGM + (pin % 8) ) );
 }
 
 /// Converts the pin to appropriate output port register
-inline volatile u8 * pin_to_output_port(u8 pin)
+inline volatile u8 * pin_To_Output_Port(u8 pin)
 {
         return ( (volatile u8 *)(pgm_read_word( pin_to_port_mask_PGM + (pin / 8) ) ) );
 }
 
 /// Converts the pin to appropriate input port register
-inline volatile u8 * pin_to_input_port(u8 pin)
+inline volatile u8 * pin_To_Input_Port(u8 pin)
 {
         return ( (volatile u8 *)(pgm_read_word( pin_to_input_port_mask_PGM + (pin / 8) ) ) );
 }
 
 /// Converts the pin to appropriate data direction register
-inline volatile u8 * pin_to_DDR(u8 pin)
+inline volatile u8 * pin_To_DDR(u8 pin)
 {
         return ( (volatile u8 *)(pgm_read_word( pin_to_ddr_mask_PGM + (pin / 8) ) ) );
 }

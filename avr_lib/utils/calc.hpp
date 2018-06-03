@@ -16,7 +16,7 @@
  ** \return     size of the array.
  **/
 template <typename T, size_t N>
-constexpr size_t arraySize( const T(&arr)[N] )
+constexpr size_t array_Size( const T(&arr)[N] )
 {
         return N;
 }
@@ -29,7 +29,7 @@ constexpr size_t arraySize( const T(&arr)[N] )
  ** \return     length of the number passed(+1 if negative)
  **/
 template <typename T, size_t N>
-u8 decompose_number( T num, u8 (&arr)[N] )
+u8 decompose_Number( T num, u8 (&arr)[N] )
 {
         bool is_neg;
         u8 length = 0;

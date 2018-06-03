@@ -18,4 +18,4 @@
  ** We can output the error to the terminal through UART Interface or log it in
  ** a file for later use.
  **/
-void log_error(const char * err, u8 err_code);
+void log_Error(const char * err, u8 err_code);

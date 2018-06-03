@@ -113,7 +113,7 @@ struct UART_Params
                 udr_   = (volatile u8 *)pgm_read_word(name + 5);
         }
 
-	inline bool is_null() const {
+	inline bool is_Null() const {
 		return !(ubrrl_ || ubrrh_ || ucsra_ || ucsrb_ || ucsrc_ || udr_);
 	}
 

@@ -63,7 +63,7 @@ public:
                 while( *(tw_.twcr_) & _BV(TWI::twsto) );
         }
 
-        inline u8 transmitt(const u8 value) const {
+        inline u8 transmit(const u8 value) const {
 
                 u8 status = write(value);
                 if( status != TWI::data )
@@ -82,7 +82,7 @@ public:
         }
 
         template <Hardware H>
-        inline static TwoWire<Mode> getInstance() {
+        inline static TwoWire<Mode> get_Instance() {
 
                 Manager::record<H> ();
 

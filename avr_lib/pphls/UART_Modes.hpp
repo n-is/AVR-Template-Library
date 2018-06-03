@@ -29,7 +29,7 @@ namespace UART {
                         return *(u.udr_);
                 }
 
-                inline u8 transmitt(const UART_Params & u, const char c) {
+                inline u8 transmit(const UART_Params & u, const char c) {
                         while( !(*(u.ucsra_) & _BV(UART::udre)) );
                         *(u.udr_) = c;
                         return 0;
@@ -45,15 +45,13 @@ namespace UART {
         {
         // Variables
         private:
-                volatile u8 tx_elements_;
                 Queue<u8, UART::buf_size_t, UART::tx_buf_size> tx_queue_;
 
-                volatile u8 rx_elements_;
                 Queue<u8, UART::buf_size_t, UART::rx_buf_size> rx_queue_;
         // Member Functions
         protected:
                 Interrupt_Mode():
-                tx_elements_(0), tx_queue_(), rx_elements_(0), rx_queue_() { }
+                tx_queue_(), rx_queue_() { }
 
                 inline u8 initialize(const UART_Params & u) const {
                         *(u.ucsrb_) |= _BV(UART::rxcie)
@@ -67,11 +65,11 @@ namespace UART {
                         return rx_queue_.lookup ();
                 }
 
-                inline void receive_irq(const UART_Params & u) {
+                inline void receive_Irq(const UART_Params & u) {
                         rx_queue_.insert (*(u.udr_));
                 }
 
-                inline u8 transmitt(const UART_Params & u, const char c) {
+                inline u8 transmit(const UART_Params & u, const char c) {
 
                         tx_queue_.insert (c);
 
@@ -80,7 +78,7 @@ namespace UART {
                         return 0;
                 }
 
-                inline u8 transmitt_irq(const UART_Params & u) {
+                inline u8 transmit_Irq(const UART_Params & u) {
 
                         if( tx_queue_.length () )
                                 *(u.udr_) = tx_queue_.lookup ();

@@ -8,17 +8,17 @@
 
 #include "AVR.hpp"
 
-void pin_mode(const u8 pin, const u8 pin_mode)
+void pin_Mode(const u8 pin, const u8 mode)
 {
-        const u8 bit = pin_to_bit (pin);
-        volatile u8 * ddr = pin_to_DDR (pin);
-        volatile u8 * port = pin_to_output_port (pin);
+        const u8 bit = pin_To_Bit (pin);
+        volatile u8 * ddr = pin_To_DDR (pin);
+        volatile u8 * port = pin_To_Output_Port (pin);
 
         if( !ddr ) return;
 
-        switch( pin_mode ) {
+        switch( mode ) {
                 case DDR::INPUT: {
-                        *ddr &= !(bit);
+                        *ddr &= ~(bit);
                 }break;
 
                 case DDR::OUTPUT: {
@@ -27,7 +27,7 @@ void pin_mode(const u8 pin, const u8 pin_mode)
 
                 case DDR::PULL_UP: { // || DDR::OFF: {
                         *port |= bit;
-                        *ddr &= !(bit);
+                        *ddr &= ~(bit);
                 }break;
 
                 case DDR::HIGH: {
@@ -42,10 +42,10 @@ void pin_mode(const u8 pin, const u8 pin_mode)
         }
 }
 
-void pin_write(const u8 pin, const u8 status)
+void pin_Write(const u8 pin, const u8 status)
 {
-        const u8 bit = pin_to_bit (pin);
-        volatile u8 * port = pin_to_output_port(pin);
+        const u8 bit = pin_To_Bit (pin);
+        volatile u8 * port = pin_To_Output_Port(pin);
 
         if( !port ) return;
 
@@ -63,10 +63,10 @@ void pin_write(const u8 pin, const u8 status)
         }
 }
 
-bool pin_read(const u8 pin)
+bool pin_Read(const u8 pin)
 {
-        const u8 bit = pin_to_bit (pin);
-        volatile u8 * reg = pin_to_input_port(pin);
+        const u8 bit = pin_To_Bit (pin);
+        volatile u8 * reg = pin_To_Input_Port(pin);
 
         if( !reg ) return 0;
 
@@ -74,27 +74,27 @@ bool pin_read(const u8 pin)
 }
 
 
-void port_mode(const u8 port, const u8 value)
+void port_Mode(const u8 port, const u8 value)
 {
-	volatile u8 * reg = pin_to_DDR(port);
+	volatile u8 * reg = pin_To_DDR(port);
 
 	if (!reg) return;
 
 	*reg = value;
 }
 
-void port_write(const u8 port, const u8 value)
+void port_Write(const u8 port, const u8 value)
 {
-	volatile u8 * reg = pin_to_output_port(port);
+	volatile u8 * reg = pin_To_Output_Port(port);
 
 	if (!reg) return;
 
 	*reg = value;
 }
 
-u8 port_read(const u8 port)
+u8 port_Read(const u8 port)
 {
-	volatile u8 * reg = pin_to_input_port(port);
+	volatile u8 * reg = pin_To_Input_Port(port);
 
 	return *reg;
 }

@@ -10,13 +10,19 @@
 
 enum class Hardware
 {
-        UART_0,         ///< Uart 0, in arduino it is connected to Serial
+        UART_0,         ///< Uart 0, in arduino is connected to Serial
         UART_1,
         UART_2,
         UART_3,
 
         TWI_0,
 
-        LAST   ///< Just a place-holder for static_assertion that the requested
+	/// These are 16-bit PWM in m2560
+	PWM_1,
+	PWM_3,
+	PWM_4,
+	PWM_5,
+
+        LAST   ///< Just a place-holder for static_assert-ion that the requested
                ///< hardware actually exists.
 };

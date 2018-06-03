@@ -25,12 +25,12 @@ public:
                 static_assert(H < Hardware::LAST && ((u8)H >= 0),
                                 "Hardware Not Available.");
 
-                if( is_available<H> () ) {
+                if( is_Available<H> () ) {
                         hardwares[(u8)H] = 1;
                         return 0;
                 }
 		// Error
-                log_error ("Hardware in use.", (u8)H);
+                log_Error ("Hardware in use.", (u8)H);
                 return 1;
         }
 
@@ -40,17 +40,17 @@ public:
                 static_assert(H < Hardware::LAST && ((u8)H >= 0),
                                 "Hardware Not Available.");
 
-                if( !is_available<H> () ) {
+                if( !is_Available<H> () ) {
                         hardwares[(u8)H] = 0;
                         return 0;
                 }
 		// Warning
-                log_error ("Hardware not in use.", (u8)H);
+                log_Error ("Hardware not in use.", (u8)H);
                 return 1;
         }
 
         template <Hardware H>
-        inline static u8 is_available() {
+        inline static u8 is_Available() {
                 return !(hardwares[(u8)H]);
         }
 

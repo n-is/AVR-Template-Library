@@ -65,16 +65,16 @@ private:
         LiquidCrystal( const LiquidCrystal &c ) = delete;
         LiquidCrystal& operator=( const LiquidCrystal &c ) = delete;
 
-        inline void byte_command(const u8 byte_cmd) const;
-        inline void nibble_command(const u8 nibble_cmd) const;
+        inline void byte_Command(const u8 byte_cmd) const;
+        inline void nibble_Command(const u8 nibble_cmd) const;
 
-        void send_nibble(const u8 nibble_data) const;
+        void send_Nibble(const u8 nibble_data) const;
 
         inline void send(const u8 value) const;
 
         inline void enable() const;
 
-        inline bool isBusy() const;
+        inline bool is_Busy() const;
 
         inline u8 write(const u8 character) const
         __attribute__((__always_inline__));

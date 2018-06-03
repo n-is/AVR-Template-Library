@@ -21,7 +21,7 @@ class Communication
 {
 public:
 	virtual u8 receive() const = 0;
-	virtual u8 transmitt(const char c) const = 0;
+	virtual u8 transmit(const char c) const = 0;
 };
 
 /** \class HardwareUART
@@ -66,7 +66,7 @@ public:
 	~HardwareUART();
 
 	template <Hardware H>
-	inline static HardwareUART<Mode> getInstance() {
+	inline static HardwareUART<Mode> get_Instance() {
 
 		/** If the UART is already used by some other client, just
 		 ** assign a null UART to the requesting client. If the Error
@@ -108,7 +108,7 @@ public:
 	/** A const function to initialize the UART with provided baud rate and
 	 ** configuration. A default configuration (config = data_len::_8 |
 	 ** parity::none | stop_bits::_1) is provided if the configuration is
-	 ** not specified.
+	 ** not specified.----------------------------------------------------
 	 ** \param baud  : A template parameter that specifies the baud rate of
 	 **                the UART transmission. Baud rate can only be some
 	 **                specified values. The baud rate specified is checked
@@ -135,31 +135,31 @@ public:
 	inline void terminate();
 
 	inline u8 receive() const override {
-		return const_cast<HardwareUART<Mode> *>(this)->receive_non_const();
+		return const_cast<HardwareUART<Mode> *>(this)->receive_Non_Const();
 	}
 
-	inline u8 transmitt(const char c) const override {
-		return const_cast<HardwareUART<Mode> *>(this)->transmitt_non_const(c);
+	inline u8 transmit(const char c) const override {
+		return const_cast<HardwareUART<Mode> *>(this)->transmit_Non_Const(c);
 	}
 
-	inline void transmitt_irq() const {
-		const_cast<HardwareUART<Mode> *>(this)->transmitt_irq_non_const();
+	inline void transmit_Irq() const {
+		const_cast<HardwareUART<Mode> *>(this)->transmit_Irq_Non_Const();
 	}
 
-	inline void receive_irq() const {
-		const_cast<HardwareUART<Mode> *>(this)->receive_irq_non_const();
+	inline void receive_Irq() const {
+		const_cast<HardwareUART<Mode> *>(this)->receive_Irq_Non_Const();
 	}
 
-	inline void tx_on()  const { *(u_.ucsrb_) |= UART::tx_en; }
-	inline void tx_off() const { *(u_.ucsrb_) &= ~UART::tx_en; }
-	inline void rx_on()  const { *(u_.ucsrb_) |= UART::rx_en; }
-	inline void rx_off() const { *(u_.ucsrb_) &= ~UART::rx_en; }
+	inline void tx_On()  const { *(u_.ucsrb_) |= UART::tx_en; }
+	inline void tx_Off() const { *(u_.ucsrb_) &= ~UART::tx_en; }
+	inline void rx_On()  const { *(u_.ucsrb_) |= UART::rx_en; }
+	inline void rx_Off() const { *(u_.ucsrb_) &= ~UART::rx_en; }
 	inline void flush()  const { *(u_.udr_) = 0; }
 
 	inline u8 control(const u8 config) const;
 
-	inline bool is_null() const{
-		return u_.is_null();
+	inline bool is_Null() const{
+		return u_.is_Null();
 	}
 
 protected:
@@ -168,20 +168,20 @@ private:
 	HardwareUART& operator=(const HardwareUART &c) = delete;
 
 	template <u32 baud>
-	inline void basic_init(const u8 config)
+	inline void basic_Init(const u8 config)
 		const __attribute__((__always_inline__));
 
-	inline u8 receive_non_const() { return Mode::receive(u_); }
+	inline u8 receive_Non_Const() { return Mode::receive(u_); }
 
-	inline u8 transmitt_non_const(const char c) {
-		return Mode::transmitt(u_, c);
+	inline u8 transmit_Non_Const(const char c) {
+		return Mode::transmit(u_, c);
 	}
 
-	inline void transmitt_irq_non_const() { Mode::transmitt_irq(u_); }
-	inline void receive_irq_non_const() { Mode::receive_irq(u_); }
+	inline void transmit_Irq_Non_Const() { Mode::transmit_Irq(u_); }
+	inline void receive_Irq_Non_Const() { Mode::receive_Irq(u_); }
 
 	template <u32 baud>
-	inline void check_baud() const;
+	inline void check_Baud() const;
 
 }; //HardwareUART
 
@@ -204,7 +204,7 @@ constexpr u16 ubrr(const u32 baud)
 template <class Mode>
 template <u32 baud>
 inline void
-HardwareUART<Mode>::basic_init(const u8 config) const
+HardwareUART<Mode>::basic_Init(const u8 config) const
 {
 	u16 ubrr_val = ubrr(baud);
 
@@ -219,10 +219,10 @@ template <class Mode>
 template <u32 baud>
 u8 HardwareUART<Mode>::initialize(const u8 config) const
 {
-	check_baud<baud>();
+	check_Baud<baud>();
 	// Initially, the basic initialization that is needed, whether the UART
 	// is operated in the Polling mode or by the Interrupt mode is done.
-	basic_init<baud>(config);
+	basic_Init<baud>(config);
 	// Then the initialization according to the mode, the UART is operated
 	// in, is done.
 	return Mode::initialize(u_);
@@ -255,7 +255,7 @@ u8 HardwareUART<Mode>::control(const u8 config) const
 }
 
 template <u32 baud>
-constexpr bool is_baud_available()
+constexpr bool is_Baud_Available()
 {
 	return (baud == 2400 ||
 		baud == 4800 ||
@@ -276,11 +276,11 @@ constexpr bool is_baud_available()
 
 template <class Mode>
 template <u32 baud>
-void HardwareUART<Mode>::check_baud() const
+void HardwareUART<Mode>::check_Baud() const
 {
 	/* Check if the baud entered is a valid baud rate. Give Compile-time
 	 * error if an invalid baud rate is asked.
 	 */
-	static_assert(is_baud_available<baud>(), "Requested Baud Rate is not "
+	static_assert(is_Baud_Available<baud>(), "Requested Baud Rate is not "
 		"available.");
 }

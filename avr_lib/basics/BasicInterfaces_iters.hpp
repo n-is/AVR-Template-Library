@@ -20,9 +20,9 @@ template <class Item>
 class IIterable
 {
 public:
-        virtual Item getItemAt(const u8 index) const = 0;
+        virtual Item get_Item_At(const u8 index) const = 0;
         virtual size_t length() const = 0;
-        inline virtual IIterator<Item> getIterator() const
+        inline virtual IIterator<Item> get_Iterator() const
                 __attribute__((__always_inline__));
 protected:
         IIterable<Item>() { }
@@ -41,9 +41,9 @@ public:
 
         inline void next() { ++curr_; }
 
-        inline bool isDone() const { return curr_ >= iter_->length(); }
+        inline bool is_Done() const { return curr_ >= iter_->length(); }
 
-        inline Item current() const { return iter_->getItemAt(curr_); }
+        inline Item current() const { return iter_->get_Item_At(curr_); }
 
         //~IIterator() { free(iter_); }
 
@@ -67,7 +67,7 @@ private:
         inline friend void
         operator<<(const IWrite & writer, IIterator<char> & iter) {
                 iter.first ();
-                while( !iter.isDone() ) {
+                while( !iter.is_Done() ) {
                         writer._write_ (iter.current ());
                         iter.next ();
                 }
@@ -93,15 +93,23 @@ private:
         inline friend void
 	operator<<(const IWrite & writer, int num) {
                 u8 digits[6];
-                u8 len = decompose_number (num, digits);
+                u8 len = decompose_Number (num, digits);
                 for(u8 i = 0; i < len; ++i)
                 writer._write_ (digits[i]);
         }
 
+	inline friend void
+	operator<<(const IWrite & writer, u16 num) {
+		u8 digits[6];
+		u8 len = decompose_Number(num, digits);
+		for (u8 i = 0; i < len; ++i)
+			writer._write_(digits[i]);
+	}
+
         inline friend void
 	operator<<(const IWrite & writer, long num) {
                 u8 digits[11];
-                u8 len = decompose_number (num, digits);
+                u8 len = decompose_Number (num, digits);
                 for(u8 i = 0; i < len; ++i)
                 writer._write_ (digits[i]);
         }
@@ -110,7 +118,7 @@ private:
 
 
 template <class Item>
-IIterator<Item> IIterable<Item>::getIterator() const
+IIterator<Item> IIterable<Item>::get_Iterator() const
 {
         return IIterator<Item>(this);
 }
