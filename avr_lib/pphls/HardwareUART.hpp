@@ -45,6 +45,8 @@ public:
  **
  ** \note The client should call terminate() to close the UART if it is no
  **       longer required, so that some other client can use the same hardware.
+ ** 
+ ** \note 9-bit data format is not supported by this class
  **/
 template <class Mode>
 class HardwareUART final : public Communication, public Mode
@@ -129,7 +131,7 @@ public:
 	 ** \return 0 if initialized successfully else 1.
 	 **/
 	template <u32 baud>
-	inline u8 initialize(const u8 config = 0b00011000) const;
+	inline u8 initialize(const u8 config = 0x06)const;
 
 	template <Hardware H>
 	inline void terminate();
@@ -247,9 +249,13 @@ u8 HardwareUART<Mode>::control(const u8 config) const
 	// All the configurations that are required by the user can be set up
 	// in the UCSRCn register of the avr. Most useful configurations are
 	// available through the flags provided in the UART_Params.hpp file.
-	*(u_.ucsrc_) |= ((config & UART::stop::_2) << UART::usbs)
-		     | (((config & UART::parity::odd) >> 1) << UART::upm)
-		     | (((config & UART::data_len::_8) >> 3) << UART::ucsz);
+
+	u8 ctrl = ( (config & _BV(UART::upm1)) | (config & _BV(UART::upm0))
+		  | (config & _BV(UART::usbs))
+		  | (config & _BV(UART::ucsz1)) | (config & _BV(UART::ucsz0)) );
+
+	*(u_.ucsrc_) &= ~ctrl;
+	*(u_.ucsrc_) |= ctrl;
 
 	return 0;
 }

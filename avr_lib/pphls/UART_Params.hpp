@@ -43,18 +43,23 @@ namespace UART {
                                         500000,
                                         1000000 };
 
+	// Bits in UCSRC register
+	const u8 udre = 5;
+	const u8 rxc = 7;
+
+	// Bits in UCSRB register
         const u8 rxcie = 7;
         const u8 udrie = 5;
 
         const u8 rx_en = 4;
         const u8 tx_en = 3;
 
-        const u8 upm   = 4;
+	// Bits in UCSRC register
+	const u8 upm1  = 5;
+        const u8 upm0  = 4;
         const u8 usbs  = 3;
-        const u8 ucsz  = 1;
-
-        const u8 udre  = 5;
-        const u8 rxc   = 7;
+	const u8 ucsz1 = 2;
+        const u8 ucsz0 = 1;
 
         typedef u8      buf_size_t;
         const buf_size_t tx_buf_size = 128;
@@ -71,21 +76,21 @@ namespace UART {
         //
 
         namespace stop {
-                const u8 _1 = 0b0;
-                const u8 _2 = 0b1;
+		const u8 _1 = 0;
+                const u8 _2 = (1 << usbs);
         }
 
         namespace parity {
-                const u8 none = 0x00;
-                const u8 even = 0b100;
-                const u8 odd  = 0b110;
+		const u8 none = 0;
+                const u8 even = (1 << upm1);
+                const u8 odd  = (1 << upm1) | (1 << upm0);
         }
 
         namespace data_len {
-                const u8 _5 = 0x00;
-                const u8 _6 = 0b001000;
-                const u8 _7 = 0b010000;
-                const u8 _8 = 0b011000;
+                const u8 _5 = 0;
+                const u8 _6 = (1 << ucsz0);
+                const u8 _7 = (1 << ucsz1);
+		const u8 _8 = (1 << ucsz1) | (1 << ucsz0);
         }
 }
 

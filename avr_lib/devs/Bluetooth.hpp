@@ -40,7 +40,7 @@ public:
 
         template <u32 baud>
         inline u8
-        initialize(const u8 config = 0b00011000) const {
+        initialize(const u8 config = 0x06) const {
                 return uart_.initialize<baud>(config);
         }
 

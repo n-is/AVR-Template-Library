@@ -63,3 +63,10 @@ ISR(USART3_RX_vect)
         UART3_INTERRUPT.receive_Irq ();
 }
 #endif // UART3_INTERRUPT
+
+#ifdef SPI_INTERRUPT
+ISR(SPI_STC_vect)
+{
+	Main::spi_slave.spi_Irq();
+}
+#endif // SPI_INTERRUPT

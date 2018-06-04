@@ -1,10 +1,10 @@
 /*
-* SPI.hpp
-*
-* Created: 3/10/2018 11:51:31 AM
-*  Author: Nirdesh
-*   email: 073bex420.nirdesh@pcampus.edu.np
-*/
+ * SPI.hpp
+ *
+ * Created: 3/10/2018 11:51:31 AM
+ *  Author: Nirdesh
+ *   email: 073bex420.nirdesh@pcampus.edu.np
+ */
 
 #pragma once
 
@@ -12,60 +12,82 @@
 #include "SPI_Params.hpp"
 #include "SPI_Modes.hpp"
 
-template <class Mode>
-class HardwareSPI : public Mode
+
+ /** \class HardwareSPI
+ ** \param Relation : A template parameter that decides whether to operate
+ **		      HardwareSPI in Master or Slave mode.
+ **
+ ** \param Mode : A template parameter that decides the mode of operation of
+ **               the HardwareSPI class.
+ **
+ ** \brief Models an actual spi of the AVR microcontroller.
+ **
+ ** This class is meant to model the actual hardware SPI of the AVR
+ ** microcontroller.
+ **
+ ** To choose the required mode of operation, Policy Based Design Pattern is
+ ** used. For details : https://en.wikipedia.org/wiki/Policy-based_design
+ **
+ ** \note If used as Master, multi-slave is supported in Polling mode.
+ **	  Multi-Slaves in Interrupt mode is not yet fully supported.
+ **
+ ** \note It is recommeded to use Master in Polling mode and the Slave in the
+ **	  Interrupt mode. Since SPI can be used at very high frequencies, using
+ **	  Master in Polling mode will not create much delay.
+ **	  
+ ** \note If used as Slave, the SCK(baud) of Master can't be more than F_CPU/4
+ **/
+template<class Relation, class Mode>
+class HardwareSPI
 {
 private:
 	SPI_Params s_;
+	const u8 slave_select_;
 public:
-	template <typename T, size_t N>
-	HardwareSPI(T(&arr)[N]) :
-		s_(arr) { }
+	HardwareSPI(u8 slave_select) :
+		s_(SPI::_REG), slave_select_(slave_select) { }
 
 	~HardwareSPI() { }
 
-	template<u32 baud>
+	template<u32 baud = 1000000>
 	inline u8 initialize() {
-		Mode::template initialize<baud>(s_);
-		return 0;
+		return Relation::template initialize<baud>(s_, slave_select_);
 	}
 
-	inline u8 exchange(const u8 c);
+	inline u8 exchange(u8 c) {
+		return Mode::exchange(s_, slave_select_, c);
+	}
 
 	inline void terminate();
 
+	inline u8 control(u8 config) const;
+
+	inline u8 spi_Irq() { return Mode::spi_Irq(s_, slave_select_); }
+
+	inline bool is_Null() const { return s_.is_Null();  }
+
 };
 
-/*
-template <class Mode>
-template<u32 baud>
-inline u8 HardwareSPI<Mode>::initialize()
+template<class Relation, class Mode>
+inline u8 HardwareSPI<Relation, Mode>::control(u8 config) const
 {
-}
-*/
+	u8 ctrl = (  (config & _BV(SPI::dord))
+		   | (config & _BV(SPI::cpol))
+		   | (config & _BV(SPI::cpha)) );
 
-template <class Mode>
-inline u8 HardwareSPI<Mode>::exchange(const u8 c)
-{
-	*(s_.spdr_) = c;
-	while (!(*(s_.spsr_) & (_BV(SPI::spif))));
+	*(s_.spcr_) &= ~ctrl;
+	*(s_.spcr_) |= ctrl;
 
-	return *(s_.spdr_);
+	return 0;
 }
 
-
-//template <class Mode>
-//inline u8 HardwareSPI<Mode>::receive()
-//{
-//	*(s_.spdr_) = 0x00;
-//	while (!(*(s_.spsr_) & (_BV(SPI::spif))));
-//	return (*(s_.spdr_));
-//}
-
-
-template<class Mode>
-inline void HardwareSPI<Mode>::terminate()
+template<class Relation, class Mode>
+inline void HardwareSPI<Relation, Mode>::terminate()
 {
-	Mode::template terminate();
+	pin_Mode(SPI::mosi_pin, DDR::OFF);
+	pin_Mode(SPI::miso_pin, DDR::OFF);
+	pin_Mode(SPI::sck_pin, DDR::OFF);
+	pin_Mode(slave_select_, DDR::OFF);
+
 	s_.set_params(SPI::_NULL);
 }

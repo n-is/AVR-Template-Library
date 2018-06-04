@@ -14,6 +14,9 @@
 
 namespace SPI
 {
+	using buf_size_t = u8;
+	const buf_size_t buf_size = 128;
+
 	const u16 PROGMEM _NULL[] = { 0, 0, 0 };
 	const u16 PROGMEM _REG[] = { (u16)&SPCR, (u16)&SPSR, (u16)&SPDR };
 
@@ -31,45 +34,45 @@ namespace SPI
 	const u8 spe = 6;
 	const u8 spie = 7;
 
-	//Bits of SPSR(Status Register)
+	//Bits of SPSR(Status Register) that can be manipulated
 	const u8 spi2x = 0;
 	const u8 wcol = 6;
 	const u8 spif = 7;
 
-	//Bits of SPDR(Data Register)
-	const u8 lsb = 0;
-	const u8 msb = 7;
-
 
 	namespace clock {
 
-		const u8 DIV_2 = 0x04;
+		const u8 DIV_2 = 0x00;
 		const u8 DIV_4 = 0x00;
-		const u8 DIV_8 = 0x05;
+		const u8 DIV_8 = 0x01;
 		const u8 DIV_16 = 0x01;
-		const u8 DIV_32 = 0x06;
+		const u8 DIV_32 = 0x02;
 		const u8 DIV_64 = 0x02;
 		const u8 DIV_128 = 0x03;
-
-		const u8 _DEFAULT = DIV_4;
 	}
 
 	namespace order {
 
-		const u8 _MSB = 0;
-		const u8 _LSB = 1;
+		const u8 msb = (0 << SPI::dord);
+		const u8 lsb = (1 << SPI::dord);
 
-		const u8 _DEFAULT = _MSB;
+		const u8 _default = msb;
 	}
 
 	namespace ckpol {
+		
+		const u8 idle_low = (0 << SPI::cpol);
+		const u8 idle_high = (1 << SPI::cpol);
 
-		const u8 active_low = 0;
-		const u8 active_high = 1;
-		const u8 pulse_low = 2;
-		const u8 pulse_high = 3;
+		const u8 _default = idle_low;
+	}
 
-		const u8 _DEFAUT = active_low;
+	namespace ckpha {
+
+		const u8 first_edge = (0 << SPI::cpha);
+		const u8 last_edge = (1 << SPI::cpha);
+
+		const u8 _default = last_edge;
 	}
 }
 
@@ -89,6 +92,10 @@ struct SPI_Params
 		spcr_ = (volatile u8 *)pgm_read_word(arr + 0);
 		spsr_ = (volatile u8 *)pgm_read_word(arr + 1);
 		spdr_ = (volatile u8 *)pgm_read_word(arr + 2);
+	}
+
+	inline bool is_Null() const {
+		return !(spcr_ || spsr_ || spdr_);
 	}
 };
 
